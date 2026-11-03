@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Subhash</title>
+<meta name="description" content="Subhash is a student in Hyderabad who builds apps and websites.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,800&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root { --bg:#eef2f7; --ink:#101a33; --muted:#55607a; --accent:#2a45ff; --on-accent:#fff; --card:#fff; --line:#d5dce8; }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg:#0d1224; --ink:#eef1fb; --muted:#9aa5c4; --accent:#7f93ff; --on-accent:#0d1224; --card:#151c35; --line:#263052; }
+  }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--bg); color:var(--ink); font-family:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif; line-height:1.6; }
+  h1,h2,h3 { font-family:"Bricolage Grotesque","Helvetica Neue",Arial,sans-serif; letter-spacing:-0.03em; margin:0; }
+  a { color:var(--accent); }
+  :focus-visible { outline:3px solid var(--accent); outline-offset:3px; }
+  .wrap { max-width:880px; margin:0 auto; padding:0 24px; }
+  [hidden] { display:none !important; }
+
+  /* gate */
+  #gate { min-height:100vh; display:flex; align-items:center; padding:48px 0; }
+  #gate h1 { font-weight:800; font-size:clamp(3rem,13vw,7.5rem); line-height:.92; margin-bottom:16px; }
+  #gate .sub { color:var(--muted); font-size:1.15rem; max-width:38ch; margin:0 0 32px; }
+  .choices { display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); }
+  .choice { text-align:left; font:inherit; color:var(--ink); background:var(--card); border:2px solid var(--line); border-radius:14px; padding:16px 18px; cursor:pointer; }
+  .choice strong { display:block; font-family:"Bricolage Grotesque",Arial,sans-serif; font-size:1.15rem; }
+  .choice span { color:var(--muted); font-size:.92rem; }
+  .choice:hover { border-color:var(--accent); }
+
+  /* site */
+  .topbar { padding:16px 0; border-bottom:1px solid var(--line); }
+  .topbar .wrap { display:flex; justify-content:space-between; align-items:center; gap:12px; }
+  .switch { font:inherit; background:none; border:2px solid var(--ink); color:var(--ink); border-radius:999px; padding:6px 14px; cursor:pointer; }
+  .hero { padding:64px 0 48px; }
+  .hero h2 { font-weight:800; font-size:clamp(2.2rem,8vw,4.2rem); line-height:1; margin-bottom:20px; }
+  .hero p { font-size:1.15rem; color:var(--muted); max-width:52ch; margin:0; }
+  section { padding:40px 0; border-top:1px solid var(--line); }
+  section h3 { font-size:1.7rem; margin-bottom:16px; }
+  section p { max-width:62ch; margin:0 0 12px; }
+  .projects { display:grid; gap:16px; }
+  .project { background:var(--card); border:1px solid var(--line); border-radius:14px; padding:22px; }
+  .project h4 { font-family:"Bricolage Grotesque",Arial,sans-serif; font-size:1.3rem; margin:0 0 6px; }
+  .project p { color:var(--muted); margin:0 0 10px; }
+  .project .tag { font-size:.9rem; margin:0; }
+  .pills { list-style:none; padding:0; margin:0; display:flex; flex-wrap:wrap; gap:10px; }
+  .pills li { background:var(--card); border:1px solid var(--line); border-radius:999px; padding:6px 14px; font-size:.95rem; }
+  .links { display:flex; flex-wrap:wrap; gap:12px; }
+  .btn { display:inline-block; padding:11px 20px; border-radius:999px; border:2px solid var(--ink); color:var(--ink); text-decoration:none; font-weight:500; }
+  .btn.primary { background:var(--accent); border-color:var(--accent); color:var(--on-accent); }
+  footer { padding:40px 0 64px; color:var(--muted); font-size:.9rem; }
+</style>
+</head>
+<body>
+
+<!-- WHO ARE YOU? -->
+<main id="gate">
+  <div class="wrap">
+    <h1>Hi, I’m Subhash.</h1>
+    <p class="sub">Before I show you around, who are you?</p>
+    <div class="choices" id="choices"></div>
+  </div>
+</main>
+
+<!-- TAILORED SITE -->
+<div id="site" hidden>
+  <div class="topbar"><div class="wrap">
+    <strong>Subhash</strong>
+    <button class="switch" id="switch" type="button">Not you? Switch</button>
+  </div></div>
+  <header class="hero"><div class="wrap">
+    <h2 id="headline"></h2>
+    <p id="intro"></p>
+  </div></header>
+  <main id="sections"></main>
+  <footer><div class="wrap">Made by Subhash in Hyderabad.</div></footer>
+</div>
+
+<script>
+/* ============================================================
+   EDIT ONLY THIS BLOCK. Everything on the page comes from here.
+   ============================================================ */
+
+const ME = {
+  github: "https://github.com/Subhash-rgb",
+  email: "kanchiraju.subhash29@gmail.com",
+  linkedin: "",                                 // leave "" to hide
+  about: "Born in Virginia, USA. Texas based, and living in Hyderabad, India. I build apps, and I’m known for presentations and computer skills that go past the usual. I like turning ideas into things people can actually use.",
+  skills: ["HTML", "CSS", "JavaScript", "Node.js", "Python", "C++", "Presentations"],
+  interests: ["Chess (2348 on chess.com)", "Minecraft", "Mech Arena"],
+  setup: ["Acer Aspire 14 (AS14H-53)", "Acer EA122 monitor"],
+  grades: [
+    { label: "Grade 5", value: "98.9%" },
+    { label: "Grade 8", value: "98%" },
+    { label: "Grade 7", value: "94%" },
+    { label: "All other years", value: "91–96%" }
+  ],
+  schools: [
+    "CyBoard Online School (Grades 7–9)",
+    "Eluru Public School (Grade 6)",
+    "Bhashyam Educational Institutions (Grades 4–5)",
+    "St. Teresa’s Elementary School, Eluru (Grades 1–3)"
+  ],
+  achievements: [
+    "1st place, Science Environmental Debate",
+    "1st place and Best Delegate, Spectra Genie Model MUN",
+    "Invited to the UCMAS India abacus competition",
+    "Best Performance Award, Bhashyam",
+    "Class English Mentor, Bhashyam",
+    "1st place, Social Science Spectrum",
+    "Elected Vice Captain, Aspire House",
+    "Chess.com rating: 2348"
+  ]
+};
+
+const PROJECTS = {
+  nightwire: {
+    title: "NightWire Chat",
+    text: "A real-time chat web app with direct messages, file sharing, threaded replies, voice chat and emoji reactions.",
+    tag: "Node.js · Socket.io · WebRTC",
+    link: ""
+  },
+  travel: {
+    title: "Travel price finder",
+    text: "A desktop app that pulls flight, train and bus prices from several sites and saves them to an Excel sheet.",
+    tag: "Python · Tkinter · Selenium",
+    link: ""
+  },
+  gchatlog: {
+    title: "gchatlog",
+    text: "A free website that counts messages per person in our friends’ Google Chat group and shows a leaderboard. Built from Google Takeout data and hosted on GitHub Pages.",
+    tag: "HTML · JavaScript · GitHub Pages",
+    link: ""
+  }
+  // To add an app: copy a block above, give it a new id, then add that id to "projects" in each view below
+};
+
+/* One entry per page. order = sections to show, in order.
+   Section names: about, projects, skills, achievements, academics, interests, setup, contact */
+const VIEWS = {
+  serious: {
+    label: "I’m here for work, school or business", hint: "Skills, grades, awards, apps and how to reach me",
+    headline: "I build real things, and I ship them.",
+    intro: "Here’s what I can do, what I’ve achieved and what I’ve already made.",
+    order: ["projects", "skills", "achievements", "academics", "about", "contact"],
+    projects: ["nightwire", "travel", "gchatlog"]
+  },
+  casual: {
+    label: "I’m just hanging out", hint: "The relaxed version",
+    headline: "Hey, you made it.",
+    intro: "Here’s the stuff I make and do for fun.",
+    order: ["about", "projects", "achievements", "interests", "setup", "contact"],
+    projects: ["gchatlog", "nightwire", "travel"]
+  }
+};
+
+/* ============================================================
+   Code below this line: no need to touch.
+   ============================================================ */
+
+const $ = (id) => document.getElementById(id);
+
+function el(tag, props, kids) {
+  const n = document.createElement(tag);
+  if (props) Object.assign(n, props);
+  (kids || []).forEach((k) => n.append(k));
+  return n;
+}
+
+function box(title, ...nodes) {
+  const w = el("div", { className: "wrap" }, [el("h3", { textContent: title }), ...nodes]);
+  return el("section", null, [w]);
+}
+
+const SECTIONS = {
+  about(v) {
+    const kids = [el("p", { textContent: ME.about })];
+    if (ME.school) kids.push(el("p", { textContent: ME.school }));
+    return box("About me", ...kids);
+  },
+  projects(v) {
+    const ids = v.projects.filter((id) => PROJECTS[id]);
+    const cards = ids.map((id) => {
+      const p = PROJECTS[id];
+      const kids = [el("h4", { textContent: p.title }), el("p", { textContent: p.text }), el("p", { className: "tag", textContent: p.tag })];
+      if (p.link) kids.push(el("p", { className: "tag" }, [el("a", { href: p.link, textContent: "Open " + p.title })]));
+      return el("article", { className: "project" }, kids);
+    });
+    return box("Projects", el("div", { className: "projects" }, cards));
+  },
+  skills() {
+    if (!ME.skills.length) return null;
+    return box("What I work with", el("ul", { className: "pills" }, ME.skills.map((s) => el("li", { textContent: s }))));
+  },
+  achievements() {
+    if (!ME.achievements.length) return null;
+    return box("Achievements", el("ul", { className: "pills" }, ME.achievements.map((s) => el("li", { textContent: s }))));
+  },
+  interests() {
+    if (!ME.interests.length) return null;
+    return box("Outside of code", el("ul", { className: "pills" }, ME.interests.map((s) => el("li", { textContent: s }))));
+  },
+  academics() {
+    const kids = [];
+    if (ME.grades.length) kids.push(el("ul", { className: "pills" }, ME.grades.map((g) => el("li", { textContent: g.label + ": " + g.value }))));
+    if (ME.schools.length) kids.push(el("p", { style: "margin-top:16px;color:var(--muted)", textContent: "Schools: " + ME.schools.join(" · ") }));
+    if (!kids.length) return null;
+    return box("Academics", ...kids);
+  },
+  setup() {
+    if (!ME.setup.length) return null;
+    return box("My setup", el("ul", { className: "pills" }, ME.setup.map((s) => el("li", { textContent: s }))));
+  },
+  contact() {
+    const links = [];
+    if (ME.email) links.push(el("a", { className: "btn primary", href: "mailto:" + ME.email, textContent: "Email me" }));
+    if (ME.github) links.push(el("a", { className: "btn", href: ME.github, textContent: "GitHub" }));
+    if (ME.linkedin) links.push(el("a", { className: "btn", href: ME.linkedin, textContent: "LinkedIn" }));
+    return box("Contact", el("div", { className: "links" }, links));
+  }
+};
+
+function show(key) {
+  const v = VIEWS[key];
+  if (!v) return;
+  $("headline").textContent = v.headline;
+  $("intro").textContent = v.intro;
+  const out = $("sections");
+  out.replaceChildren();
+  v.order.forEach((name) => {
+    const node = SECTIONS[name] && SECTIONS[name](v);
+    if (node) out.append(node);
+  });
+  $("gate").hidden = true;
+  $("site").hidden = false;
+  document.title = "Subhash";
+  try { sessionStorage.setItem("view", key); } catch (e) {}
+  if (location.hash !== "#" + key) history.replaceState(null, "", "#" + key);
+  window.scrollTo(0, 0);
+}
+
+function gate() {
+  $("site").hidden = true;
+  $("gate").hidden = false;
+  try { sessionStorage.removeItem("view"); } catch (e) {}
+  history.replaceState(null, "", location.pathname);
+}
+
+Object.keys(VIEWS).forEach((key) => {
+  const v = VIEWS[key];
+  const b = el("button", { className: "choice", type: "button" }, [el("strong", { textContent: v.label }), el("span", { textContent: v.hint })]);
+  b.addEventListener("click", () => show(key));
+  $("choices").append(b);
+});
+
+$("switch").addEventListener("click", gate);
+window.addEventListener("hashchange", () => {
+  const k = location.hash.slice(1);
+  if (VIEWS[k]) show(k);
+});
+
+/* A link like yoursite.github.io/#serious or #casual skips the question. */
+(function start() {
+  const k = location.hash.slice(1);
+  if (VIEWS[k]) { show(k); return; }
+  try {
+    const saved = sessionStorage.getItem("view");
+    if (saved && VIEWS[saved]) show(saved);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>
